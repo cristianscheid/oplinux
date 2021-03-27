@@ -8,28 +8,28 @@ class View:
 
     def __init__(self, dao):
         self.dao = dao
-        self.slp_time = 1
+        self.slp_time = 2
         self.i = 0
 
     def print_logo(self):
         os.system('clear')
 
-        title1 = pyfiglet.figlet_format("   OPLinux")
+        logo = pyfiglet.figlet_format("OPLinux")
 
-        print(title1)
+        print(logo)
 
     def path_input(self):
         self.print_logo()
 
         if self.i == 0:
-            print(" by Cristian Scheid\n")
+            print("by Cristian Scheid\n")
             time.sleep(2)
             self.print_logo()
             self.i += 1
 
-        self.dao.main_path = '~/PS2'
-        # self.dao.main_path = input("Insert the path of your OPL folder as below:\n\n"
-        #                            "'/home/user/MyOPLFolder/' or '~/MyOPLFolder/'\n\n---> ")
+        # self.dao.main_path = '~/PS2'
+        self.dao.main_path = input("Insert the path of your OPL folder as below:\n\n"
+                                   "'/home/user/MyOPLFolder/' or '~/MyOPLFolder/'\n\n---> ")
 
     def path_exists(self):
         exists = False
