@@ -1,10 +1,12 @@
 import os
+import pickle
+
 import pycdlib
 import re
 import requests
-from bs4 import BeautifulSoup
 
 from game import Game
+from serial import Serial
 
 
 class Dao:
@@ -15,22 +17,30 @@ class Dao:
         self.main_path = ""
 
     def search_iso(self):
-        serials = ('SCUS', 'SLUS', 'SCES', 'SLES')
+        # Get '.iso' files in the 'DVD' folder
         for root, dirs, files in os.walk(self.main_path + 'DVD/'):
             for file in files:
                 if file.endswith(".iso"):
                     iso = pycdlib.PyCdlib()
+                    # Get 'id'/check if is a valid (PSX) file
                     try:
                         iso.open(os.path.join(root, file))
                         for child in iso.list_children(iso_path='/'):
                             raw = str(child.file_identifier())
-                            for serial in serials:
+                            for serial in Serial.all_serials:
+                                # If is a valid '.iso' create a 'Game' object and add to the 'games' list
                                 if raw.find(serial) != -1:
+                                    if serial in Serial.ntsc_j_c_k_serials:
+                                        game_region = 'NTSC-J/C/K'
+                                    elif serial in Serial.ntsc_u_serials:
+                                        game_region = 'NTSC-U'
+                                    else:
+                                        game_region = 'PAL'
                                     temp = re.findall(r'\d+', raw)
                                     game_id = [serial, temp[0], temp[1]]
-                                    game_name = os.path.join(file)
+                                    game_name = os.path.join(file)[:-4]
                                     game_path = os.path.join(root, file)
-                                    self.games.append(Game(game_id, game_name, game_path))
+                                    self.games.append(Game(game_id, game_name, game_path, game_region))
                                     iso.close()
                                     break
                     except:
@@ -46,14 +56,15 @@ class Dao:
                     f.write(r.content)
 
     def rename(self):
-        for i in range(len(self.games)):
-            url = 'https://psxdatacenter.com/psx2/ulist2.html'
-            # https://psxdatacenter.com/psx2/plist2.html
-            # https://psxdatacenter.com/psx2/jlist2.html
-            content = requests.get(url)
-            soup = BeautifulSoup(content.text, 'html.parser')
-            result = soup.find(string=re.compile(self.games[i].get_formatted_id_url)).find_next(
-                "td").text.strip().title()
-            os.rename(self.games[i].path, f"{self.main_path}DVD/{self.games[i].get_formatted_id}.{result}.iso")
-
-# Mudança feita na branch devel
+        # Opens 'database' and get a list with ('id', 'name')
+        with open("data", "rb") as fp:
+            data = pickle.load(fp)
+        # Retrieve only 'id's from list and store in another list
+        data_only_ids = []
+        for i in data:
+            data_only_ids.append(data[0])
+        # If a game 'id' is in the database, file is renamed with the official name
+        for game in self.games:
+            if game.get_formatted_id() in data_only_ids:
+                index = data_only_ids.index(game.get_formatted_id())
+                os.rename(game.path, f"{self.main_path}DVD/{game.get_formatted_id}.{data[1][index]}.iso")

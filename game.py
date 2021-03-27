@@ -1,14 +1,13 @@
 class Game:
 
-    def __init__(self, id, name, path):
+    def __init__(self, id, name, path, region):
         self.id = id
-        self.name = name[:len(name) - 4]
+        self.name = name
         self.path = path
+        self.region = region
 
     def get_formatted_id(self):
-        formatted_id = f"{self.id[0]}_{self.id[1]}.{self.id[2]}"
-        return formatted_id
+        return f"{self.id[0]}_{self.id[1]}.{self.id[2]}"
 
     def get_formatted_id_url(self):
-        formatted_id_url = f"{self.id[0]}-{self.id[1]}{self.id[2]}"
-        return formatted_id_url
+        return f"{self.id[0]}-{self.id[1]}{self.id[2]}"
