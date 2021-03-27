@@ -55,3 +55,5 @@ class Dao:
             result = soup.find(string=re.compile(self.games[i].get_formatted_id_url)).find_next(
                 "td").text.strip().title()
             os.rename(self.games[i].path, f"{self.main_path}DVD/{self.games[i].get_formatted_id}.{result}.iso")
+
+# Mudança feita na branch devel
