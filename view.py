@@ -8,8 +8,8 @@ class View:
 
     def __init__(self, dao):
         self.dao = dao
-        self.slp_time = 2
-        self.i = 0
+        self.slp_time = 3
+        self.i = 3
 
     def print_logo(self):
         os.system('clear')
@@ -53,10 +53,10 @@ class View:
             print(f"No PSX game found in '{self.dao.main_path}'\nPlease check the path/folder")
             time.sleep(self.slp_time)
         elif len(self.dao.invalid_iso_files) < 1:
-            print(f"Found in '{self.dao.main_path}':\n\n-> {len(self.dao.games)} PSX games")
+            print(f"{len(self.dao.games)} games found!\n\n")
         else:
             print(
-                f"Found in '{self.dao.main_path}':\n\n-> {len(self.dao.games)} PSX games\n-> {len(self.dao.invalid_iso_files)} invalid (non PSX) '.iso'")
+                f"{len(self.dao.games)} games found!\n\n{len(self.dao.invalid_iso_files)} invalid '.iso's")
             time.sleep(self.slp_time)
 
     def print_menu(self):
@@ -75,6 +75,10 @@ class View:
                 print("Choose a valid option! (1-5)")
             elif choice == '1':
                 self.print_all_games()
+            elif choice == '2':
+                self.dao.rename()
+            elif choice == '3':
+                self.dao.get_cover()
             else:
                 qt = True
         os.system('clear')
@@ -83,11 +87,12 @@ class View:
     def print_all_games(self):
         self.print_logo()
         print(f"Games in {self.dao.main_path}:\n")
+        print('Region |   Serial   |   Name\n')
         for game in self.dao.games:
-            if game.name[:11] == game.get_formatted_id():
-                print(game.name[12:])
+            if game.name[:11] == game.get_formatted_id_opl():
+                print(f'{game.region} | {game.get_formatted_id()} | {game.name[12:]}')
             else:
-                print(game.name)
+                print(f'{game.region} | {game.get_formatted_id()} | {game.name}')
         print("\n1 = Return to Menu")
         choice = input("\n---> ")
         option = '1'

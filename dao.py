@@ -12,9 +12,11 @@ from serial import Serial
 class Dao:
 
     def __init__(self):
+        self.main_path = ""
         self.games = []
         self.invalid_iso_files = []
-        self.main_path = ""
+        self.not_found_id = []
+        self.not_found_cover = []
 
     def search_iso(self):
         # Get '.iso' files in the 'DVD' folder
@@ -31,7 +33,7 @@ class Dao:
                                 # If is a valid '.iso' create a 'Game' object and add to the 'games' list
                                 if raw.find(serial) != -1:
                                     if serial in Serial.ntsc_j_c_k_serials:
-                                        game_region = 'NTSC-J/C/K'
+                                        game_region = 'NTSC-J'
                                     elif serial in Serial.ntsc_u_serials:
                                         game_region = 'NTSC-U'
                                     else:
@@ -47,24 +49,31 @@ class Dao:
                         self.invalid_iso_files.append(os.path.join(file))
 
     def get_cover(self):
-        for i in range(len(self.games)):
-            url = f'https://psxdatacenter.com/psx2/images2/covers/{self.games[i].get_formatted_id_url}.jpg'
+        for game in self.games:
+            url = f'https://github.com/cristianscheid/ps2art/raw/main/{game.get_formatted_id_opl()}_COV.jpg'
             r = requests.get(url)
             print(r.status_code)
             if r.status_code != 404:
-                with open(f"{self.main_path}ART/{self.games[i].get_formatted_id}_COV.jpg", 'wb') as f:
+                with open(f"{self.main_path}ART/{game.get_formatted_id_opl()}_COV.jpg", 'wb') as f:
                     f.write(r.content)
+            else:
+                print(game.get_formatted_id())
 
     def rename(self):
-        # Opens 'database' and get a list with ('id', 'name')
+        # Open 'database' and get a list with ('id', 'name')
         with open("data", "rb") as fp:
             data = pickle.load(fp)
         # Retrieve only 'id's from list and store in another list
         data_only_ids = []
         for i in data:
-            data_only_ids.append(data[0])
+            data_only_ids.append(i[0])
         # If a game 'id' is in the database, file is renamed with the official name
         for game in self.games:
             if game.get_formatted_id() in data_only_ids:
                 index = data_only_ids.index(game.get_formatted_id())
-                os.rename(game.path, f"{self.main_path}DVD/{game.get_formatted_id}.{data[1][index]}.iso")
+                print(game.get_formatted_id_opl())
+                os.rename(game.path, f"{self.main_path}DVD/{game.get_formatted_id_opl()}.{data[index][1]}.iso")
+            else:
+                self.not_found_id.append(game)
+        # Refresh game list
+        self.search_iso()

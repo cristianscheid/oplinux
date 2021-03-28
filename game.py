@@ -6,8 +6,8 @@ class Game:
         self.path = path
         self.region = region
 
-    def get_formatted_id(self):
+    def get_formatted_id_opl(self):
         return f"{self.id[0]}_{self.id[1]}.{self.id[2]}"
 
-    def get_formatted_id_url(self):
+    def get_formatted_id(self):
         return f"{self.id[0]}-{self.id[1]}{self.id[2]}"
