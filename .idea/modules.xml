@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/../OPL/.idea/OPL.iml" filepath="$PROJECT_DIR$/../OPL/.idea/OPL.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/OPLinuxManager.iml" filepath="$PROJECT_DIR$/.idea/OPLinuxManager.iml" />
       <module fileurl="file://$PROJECT_DIR$/../WebScrapping/.idea/WebScrapping.iml" filepath="$PROJECT_DIR$/../WebScrapping/.idea/WebScrapping.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WriteFakeIso/.idea/writeFakeIso.iml" filepath="$PROJECT_DIR$/../WriteFakeIso/.idea/writeFakeIso.iml" />
     </modules>
   </component>
 </project>

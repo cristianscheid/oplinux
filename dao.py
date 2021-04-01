@@ -47,6 +47,7 @@ class Dao:
                                     break
                     except:
                         self.invalid_iso_files.append(os.path.join(file))
+                        print()
 
     def get_cover(self):
         for game in self.games:
@@ -75,5 +76,3 @@ class Dao:
                 os.rename(game.path, f"{self.main_path}DVD/{game.get_formatted_id_opl()}.{data[index][1]}.iso")
             else:
                 self.not_found_id.append(game)
-        # Refresh game list
-        self.search_iso()

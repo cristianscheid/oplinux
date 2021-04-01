@@ -93,6 +93,9 @@ class View:
                 print(f'{game.region} | {game.get_formatted_id()} | {game.name[12:]}')
             else:
                 print(f'{game.region} | {game.get_formatted_id()} | {game.name}')
+        print('\nInvalid isos (could not open):\n')
+        for invalid_iso in self.dao.invalid_iso_files:
+            print(invalid_iso)
         print("\n1 = Return to Menu")
         choice = input("\n---> ")
         option = '1'

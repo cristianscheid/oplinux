@@ -8,5 +8,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="OPL" />
     <orderEntry type="module" module-name="WebScrapping" />
+    <orderEntry type="module" module-name="writeFakeIso" />
   </component>
 </module>
