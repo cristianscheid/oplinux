@@ -50,13 +50,10 @@ class View:
     def how_many_games(self):
         self.print_logo()
         if len(self.dao.games) < 1:
-            print(f"No PSX game found in '{self.dao.main_path}'\nPlease check the path/folder")
+            print(f"No PS2 game found in '{self.dao.main_path}'\nPlease check the path/folder")
             time.sleep(self.slp_time)
-        elif len(self.dao.invalid_iso_files) < 1:
-            print(f"{len(self.dao.games)} games found!\n\n")
         else:
-            print(
-                f"{len(self.dao.games)} games found!\n\n{len(self.dao.invalid_iso_files)} invalid '.iso's")
+            print(f"Found:\n{len(self.dao.games)} PS2 game(s)\n{len(self.dao.invalid_isos)} invalid ISO file(s)")
             time.sleep(self.slp_time)
 
     def print_menu(self):
@@ -88,19 +85,18 @@ class View:
         self.print_logo()
         print(f"Games in {self.dao.main_path}:\n")
         print('Region |   Serial   |   Name\n')
-        for game in self.dao.games:
-            if game.name[:11] == game.get_formatted_id_opl():
-                print(f'{game.region} | {game.get_formatted_id()} | {game.name[12:]}')
+        for game in self.dao.games.sort:
+            if game.name[:11] == game.id_opl:
+                print(f'{game.region} | {game.id_formatted} | {game.name[12:]}')
             else:
-                print(f'{game.region} | {game.get_formatted_id()} | {game.name}')
-        print('\nInvalid isos (could not open):\n')
-        for invalid_iso in self.dao.invalid_iso_files:
-            print(invalid_iso)
+                print(f'{game.region} | {game.id_formatted} | {game.name}')
+        print('\nInvalid ISO files:\n')
+        for iso in self.dao.invalid_isos:
+            print(f'{iso[0]} {iso[1]}')
+
         print("\n1 = Return to Menu")
         choice = input("\n---> ")
         option = '1'
         if choice == option:
             self.print_menu()
             self.input_menu()
-
-
