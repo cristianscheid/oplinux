@@ -1,4 +1,4 @@
-#!/home/cristian/PycharmProjects/OPLinuxManager/venv/bin/python
+#!/home/cristian/Documents/PycharmProjects/OPLinuxManager/venv/bin/python
 
 '''
 The main code for the pycdlib-explorer tool, which can open, read, write,

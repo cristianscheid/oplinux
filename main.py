@@ -1,7 +1,6 @@
 from dao import Dao
 from view import View
 
-
 def main():
     dao = Dao()
     view = View(dao)

@@ -1,4 +1,4 @@
-#!/home/cristian/PycharmProjects/OPLinuxManager/venv/bin/python
+#!/home/cristian/Documents/PycharmProjects/OPLinuxManager/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

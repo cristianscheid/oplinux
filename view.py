@@ -1,35 +1,26 @@
 import os
-
-import pyfiglet as pyfiglet
+import pyfiglet
 import time
-
 
 class View:
 
     def __init__(self, dao):
         self.dao = dao
         self.slp_time = 3
-        self.i = 3
 
     def print_logo(self):
         os.system('clear')
-
         logo = pyfiglet.figlet_format("OPLinux")
-
         print(logo)
 
     def path_input(self):
         self.print_logo()
-
-        if self.i == 0:
-            print("by Cristian Scheid\n")
-            time.sleep(2)
-            self.print_logo()
-            self.i += 1
-
-        # self.dao.main_path = '~/PS2'
-        self.dao.main_path = input("Insert the path of your OPL folder as below:\n\n"
-                                   "'/home/user/MyOPLFolder/' or '~/MyOPLFolder/'\n\n---> ")
+        print("by Cristian Scheid\n")
+        time.sleep(2)
+        self.print_logo()
+        self.dao.main_path = '~/Documents/PS2/OPL_FOLDER'
+        #self.dao.main_path = input("Insert the path of your OPL folder as below:\n\n"
+        #                           "'/home/user/MyOPLFolder/' or '~/MyOPLFolder/'\n\n---> ")
 
     def path_exists(self):
         exists = False
@@ -58,9 +49,9 @@ class View:
 
     def print_menu(self):
         self.print_logo()
-        print("1 = List All Games")
-        print("2 = Rename Games")
-        print("3 = Download Covers")
+        print("1 = List all games")
+        print("2 = Rename games")
+        print("3 = Download covers")
         print("\nq = Quit")
 
     def input_menu(self):
@@ -71,32 +62,26 @@ class View:
             if choice not in options:
                 print("Choose a valid option! (1-5)")
             elif choice == '1':
-                self.print_all_games()
+                self.dao.print_all_games()
+                print("\n1 = Return to Menu")
+                choice = input("\n---> ")
+                option = '1'
+                if choice == option:
+                    self.print_menu()
+                    self.input_menu()
             elif choice == '2':
                 self.dao.rename()
+                print("\n1 = Return to Menu")
+                choice = input("\n---> ")
+                option = '1'
+                if choice == option:
+                    self.print_menu()
+                    self.input_menu()
             elif choice == '3':
                 self.dao.get_cover()
+                self.print_menu()
+                self.input_menu()
             else:
                 qt = True
         os.system('clear')
         quit()
-
-    def print_all_games(self):
-        self.print_logo()
-        print(f"Games in {self.dao.main_path}:\n")
-        print('Region |   Serial   |   Name\n')
-        for game in self.dao.games.sort:
-            if game.name[:11] == game.id_opl:
-                print(f'{game.region} | {game.id_formatted} | {game.name[12:]}')
-            else:
-                print(f'{game.region} | {game.id_formatted} | {game.name}')
-        print('\nInvalid ISO files:\n')
-        for iso in self.dao.invalid_isos:
-            print(f'{iso[0]} {iso[1]}')
-
-        print("\n1 = Return to Menu")
-        choice = input("\n---> ")
-        option = '1'
-        if choice == option:
-            self.print_menu()
-            self.input_menu()

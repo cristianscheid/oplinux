@@ -1,5 +1,7 @@
 import os
 import pickle
+from hmac import new
+
 import pycdlib
 import requests
 
@@ -10,7 +12,6 @@ except ImportError:
 
 from game import Game
 from serial import Serial
-
 
 class Dao:
 
@@ -43,8 +44,7 @@ class Dao:
                             else:
                                 game_region = 'Not Found'
                             game_name = os.path.join(file)[:-4]
-                            game_path = os.path.join(root, file)
-                            self.games.append(Game(game_id, game_name, game_path, game_region))
+                            self.games.append(Game(game_id, game_name, game_region))
                             iso.close()
                         except:
                             iso.close()
@@ -52,9 +52,23 @@ class Dao:
                     except:
                         self.invalid_isos.append([file, "(Could not open ISO file)"])
 
+    def print_all_games(self):
+        print(f"Games in {self.main_path}:\n")
+        print('Region |   Serial   |   Name\n')
+        self.games.sort(key=lambda x: x.name)
+        for game in self.games:
+            if game.name[:11] == game.id_opl:
+                print(f'{game.region} | {game.id_formatted} | {game.name[12:]}')
+            else:
+                print(f'{game.region} | {game.id_formatted} | {game.name}')
+        if len(self.invalid_isos) > 0:
+            print('\nInvalid ISO files:\n')
+            for iso in self.invalid_isos:
+                print(f'{iso[0]} {iso[1]}')
+
     def get_cover(self):
         for game in self.games:
-            url = f'https://github.com/cristianscheid/ps2art/raw/main/{game.id_opl}_COV.jpg'
+            url = f"https://github.com/cristianscheid/ps2art/raw/main/{game.id_opl}_COV.jpg"
             r = requests.get(url)
             print(r.status_code)
             if r.status_code == 200:
@@ -64,15 +78,32 @@ class Dao:
                 print(game.id_opl)
 
     def rename(self):
-        # Open 'database' and get a list with ('id', 'name')
+        # Open 'data' archive and get a list of games with ('id', 'name')
         with open("data", "rb") as fp:
             data = pickle.load(fp)
         # Retrieve only 'id's from list and store in another list
         data_only_ids = []
         for i in data:
             data_only_ids.append(i[0])
-
+        # Create list of ids from the games renamed
+        id_games_renamed = []
+        self.games.sort(key=lambda x: x.name)
         for game in self.games:
             if game.id_formatted in data_only_ids:
+                # The 'index()' method returns the position at the first occurrence of the specified value
                 index = data_only_ids.index(game.id_formatted)
-                os.rename(game.path, f"{self.main_path}DVD/{game.id_opl}.{data[index][1]}.iso")
+                if game.id_formatted not in id_games_renamed:
+                    new_name = f"{game.id_opl}.{data[index][1]}"
+                    os.rename(f"{self.main_path}DVD/{game.name}.iso", f"{self.main_path}DVD/{new_name}.iso")
+                    game.name = new_name
+                    id_games_renamed.append(game.id_formatted)
+                # If the game is duplicated, rename appending 'Copy'
+                else:
+                    new_name = f"{game.id_opl}.{data[index][1]} Copy {id_games_renamed.count(game.id_formatted)}"
+                    os.rename(f"{self.main_path}DVD/{game.name}.iso", f"{self.main_path}DVD/{new_name}.iso")
+                    game.name = new_name
+                    id_games_renamed.append(game.id_formatted)
+            else:
+                self.not_found_id.append(game)
+        # Empty list of renamed games in case the 'rename' function is called again
+        id_games_renamed.clear()
