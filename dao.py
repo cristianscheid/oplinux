@@ -65,16 +65,98 @@ class Dao:
             for iso in self.invalid_isos:
                 print(f'{iso[0]} {iso[1]}')
 
-    def get_cover(self):
+    def get_art_cover(self):
+        print("Downloading front cover arts...\n")
         for game in self.games:
-            url = f"https://github.com/cristianscheid/ps2art/raw/main/{game.id_opl}_COV.jpg"
+            url = f"https://github.com/cristianscheid/ps2art/raw/main/cover/{game.id_opl}_COV.jpg"
             r = requests.get(url)
-            print(r.status_code)
             if r.status_code == 200:
                 with open(f"{self.main_path}ART/{game.id_opl}_COV.jpg", 'wb') as f:
                     f.write(r.content)
+                print(f"{game.name} -- Ok")
             else:
-                print(game.id_opl)
+                print(f"{game.name} -- Not found")
+
+    def get_art_back_cover(self):
+        print("Downloading back cover arts...\n")
+        for game in self.games:
+            url = f"https://github.com/cristianscheid/ps2art/raw/main/back_cover/{game.id_opl}_COV2.jpg"
+            r = requests.get(url)
+            if r.status_code == 200:
+                with open(f"{self.main_path}ART/{game.id_opl}_COV2.jpg", 'wb') as f:
+                    f.write(r.content)
+                print(f"{game.name} -- Ok")
+            else:
+                print(f"{game.name} -- Not found")
+
+    def get_art_spine(self):
+        print("Downloading spine arts...\n")
+        for game in self.games:
+            url = f"https://github.com/cristianscheid/ps2art/raw/main/spine/{game.id_opl}_LAB.jpg"
+            r = requests.get(url)
+            if r.status_code == 200:
+                with open(f"{self.main_path}ART/{game.id_opl}_LAB.jpg", 'wb') as f:
+                    f.write(r.content)
+                print(f"{game.name} -- Ok")
+            else:
+                print(f"{game.name} -- Not found")
+
+    def get_art_disc(self):
+        print("Downloading disc arts...\n")
+        for game in self.games:
+            url = f"https://github.com/cristianscheid/ps2art/raw/main/disc/{game.id_opl}_ICO.png"
+            r = requests.get(url)
+            if r.status_code == 200:
+                with open(f"{self.main_path}ART/{game.id_opl}_ICO.png", 'wb') as f:
+                    f.write(r.content)
+                print(f"{game.name} -- Ok")
+            else:
+                print(f"{game.name} -- Not found")
+
+    def get_art_background(self):
+        print("Downloading background arts...\n")
+        for game in self.games:
+            url = f"https://github.com/cristianscheid/ps2art/raw/main/background/{game.id_opl}_BG.jpg"
+            r = requests.get(url)
+            if r.status_code == 200:
+                with open(f"{self.main_path}ART/{game.id_opl}_BG.jpg", 'wb') as f:
+                    f.write(r.content)
+                print(f"{game.name} -- Ok")
+            else:
+                print(f"{game.name} -- Not found")
+
+    def get_art_logo(self):
+        print("Downloading logo arts...\n")
+        for game in self.games:
+            url = f"https://github.com/cristianscheid/ps2art/raw/main/logo/{game.id_opl}_LGO.png"
+            r = requests.get(url)
+            if r.status_code == 200:
+                with open(f"{self.main_path}ART/{game.id_opl}_LGO.png", 'wb') as f:
+                    f.write(r.content)
+                print(f"{game.name} -- Ok")
+            else:
+                print(f"{game.name} -- Not found")
+
+    def get_art_screenshot(self):
+        print("Downloading screenshot arts...\n")
+        for game in self.games:
+            url = f"https://github.com/cristianscheid/ps2art/raw/main/screenshot/{game.id_opl}_SCR.jpg"
+            r = requests.get(url)
+            if r.status_code == 200:
+                with open(f"{self.main_path}ART/{game.id_opl}_SCR.jpg", 'wb') as f:
+                    f.write(r.content)
+                print(f"{game.name} -- Ok")
+            else:
+                print(f"{game.name} -- Not found")
+
+    def get_art_all(self):
+        self.get_art_cover()
+        self.get_art_back_cover()
+        self.get_art_spine()
+        self.get_art_disc()
+        self.get_art_background()
+        self.get_art_logo()
+        self.get_art_screenshot()
 
     def rename(self):
         # Open 'data' archive and get a list of games with ('id', 'name')

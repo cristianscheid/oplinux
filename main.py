@@ -10,7 +10,6 @@ def main():
             dao.search_iso()
             view.how_many_games()
     view.print_menu()
-    view.input_menu()
 
 if __name__ == "__main__":
     main()

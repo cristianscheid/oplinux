@@ -15,9 +15,6 @@ class View:
 
     def path_input(self):
         self.print_logo()
-        print("by Cristian Scheid\n")
-        time.sleep(2)
-        self.print_logo()
         self.dao.main_path = '~/Documents/PS2/OPL_FOLDER'
         #self.dao.main_path = input("Insert the path of your OPL folder as below:\n\n"
         #                           "'/home/user/MyOPLFolder/' or '~/MyOPLFolder/'\n\n---> ")
@@ -46,21 +43,20 @@ class View:
         else:
             print(f"Found:\n{len(self.dao.games)} PS2 game(s)\n{len(self.dao.invalid_isos)} invalid ISO file(s)")
             time.sleep(self.slp_time)
-
+    # Main menu
     def print_menu(self):
         self.print_logo()
         print("1 = List all games")
         print("2 = Rename games")
-        print("3 = Download covers")
+        print("3 = Download art")
         print("\nq = Quit")
-
-    def input_menu(self):
         qt = False
         options = ('1', '2', '3', '4', '5', 'q', 'Q')
         while not qt:
             choice = input("\n---> ")
             if choice not in options:
                 print("Choose a valid option! (1-5)")
+            # List all games
             elif choice == '1':
                 self.dao.print_all_games()
                 print("\n1 = Return to Menu")
@@ -68,7 +64,7 @@ class View:
                 option = '1'
                 if choice == option:
                     self.print_menu()
-                    self.input_menu()
+            # Rename games
             elif choice == '2':
                 self.dao.rename()
                 print("\n1 = Return to Menu")
@@ -76,12 +72,44 @@ class View:
                 option = '1'
                 if choice == option:
                     self.print_menu()
-                    self.input_menu()
             elif choice == '3':
-                self.dao.get_cover()
-                self.print_menu()
-                self.input_menu()
+                self.print_menu_art()
             else:
                 qt = True
         os.system('clear')
         quit()
+    # Art download menu
+    def print_menu_art(self):
+        print("Choose which arts you want to download:\n")
+        print("1 = Front cover")
+        print("2 = Back cover")
+        print("3 = Spine")
+        print("4 = Disc")
+        print("5 = Background")
+        print("6 = Logo")
+        print("7 = Screenshot")
+        print("8 = All")
+        print("\n9 = Return to main menu")
+        options = ('1', '2', '3', '4', '5', '6', '7', '8', '9')
+        while True:
+            choice = input("\n---> ")
+            if choice not in options:
+                print("Choose a valid option! (1-9)")
+            elif choice == '1':
+                self.dao.get_art_cover()
+            elif choice == '2':
+                self.dao.get_art_back_cover()
+            elif choice == '3':
+                self.dao.get_art_spine()
+            elif choice == '4':
+                self.dao.get_art_disc()
+            elif choice == '5':
+                self.dao.get_art_background()
+            elif choice == '6':
+                self.dao.get_art_logo()
+            elif choice == '7':
+                self.dao.get_art_screenshot()
+            elif choice == '8':
+                self.dao.get_art_all()
+            elif choice == '9':
+                self.print_menu()
