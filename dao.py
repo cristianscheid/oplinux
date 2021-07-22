@@ -1,6 +1,5 @@
 import os
 import pickle
-from hmac import new
 
 import pycdlib
 import requests
