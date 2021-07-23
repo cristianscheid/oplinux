@@ -7,8 +7,9 @@ class View:
 
     def __init__(self, dao):
         self.dao = dao
+        # Sleep time, used to show messages for a period (seconds) on screen
         self.slp_time = 3
-
+                
     def print_logo(self):
         os.system('clear')
         logo = pyfiglet.figlet_format("OPLinux")
@@ -24,15 +25,18 @@ class View:
             if self.dao.path_exists():
                 self.dao.search_iso()
                 if len(self.dao.games) > 0:
-                    print(f"\nFound {len(self.dao.games)} PS2 game(s)")
-                    print(f"{len(self.dao.invalid_isos)} invalid ISO file(s)")
+                    if len(self.dao.invalid_isos) = 0:
+                        print(f"\nFound {len(self.dao.games)} PS2 game(s)!")
+                    else:
+                        print(f"\nFound {len(self.dao.games)} PS2 game(s) and {len(self.dao.invalid_isos)} invalid ISO file(s)!")
+                        print(f"\nChoose option 1 (List all games) from main menu to see the invalid ISO file(s)")
                     time.sleep(self.slp_time)
                     self.print_menu()
                 else:
-                    print(f"\nNo PS2 game found in '{self.dao.main_path}'\nPlease check the path/folder")
+                    print(f"\nNo PS2 game found in '{self.dao.main_path}'\n! Please check the path/folder...")
                     time.sleep(self.slp_time)
             else:
-                print("\nInvalid path(doesn't exist)!")
+                print("\nInvalid path (doesn't exist)!")
                 time.sleep(self.slp_time)
 
     # Main menu
@@ -40,7 +44,7 @@ class View:
         self.print_logo()
         print("1 = List all games")
         print("2 = Rename games")
-        print("3 = Download art")
+        print("3 = Art download menu")
         print("\nq = Quit")
         qt = False
         options = ('1', '2', '3', '4', '5', 'q', 'Q')
@@ -53,7 +57,7 @@ class View:
                 self.print_logo()
                 self.dao.search_iso()
                 self.dao.print_all_games()
-                choice = input("\nPress Enter/Return to go back to the menu...")
+                choice = input("\nPress Enter/Return to go back to the main menu...")
                 self.print_menu()
             # Rename games
             elif choice == '2':
@@ -63,8 +67,9 @@ class View:
                 self.dao.rename()
                 self.print_logo()
                 print("\nRenaming games -- Ok")
-                choice = input("\nPress Enter/Return to go back to the menu...")
+                choice = input("\nPress Enter/Return to go back to the main menu...")
                 self.print_menu()
+            # Art download menu
             elif choice == '3':
                 self.print_logo()
                 self.print_menu_art()
@@ -73,8 +78,9 @@ class View:
         os.system('clear')
         quit()
 
-    # Art download menu
+    # Art menu
     def print_menu_art(self):
+        msg_return_art_download_menu = "\nPress Enter/Return to go back to the art download menu..."
         self.print_logo()
         print("Choose which arts you want to download:\n")
         print("1 = Front cover")
@@ -95,66 +101,42 @@ class View:
             elif choice == '1':
                 self.print_logo()
                 self.dao.get_art_cover()
-                print("\n1 = Return to Menu")
-                choice = input("\n---> ")
-                option = '1'
-                if choice == option:
-                    self.print_menu_art()
+                choice = input(msg_return_art_download_menu)
+                self.print_menu_art()
             elif choice == '2':
                 self.print_logo()
                 self.dao.get_art_back_cover()
-                print("\n1 = Return to Art Menu")
-                choice = input("\n---> ")
-                option = '1'
-                if choice == option:
-                    self.print_menu_art()
+                choice = input(msg_return_art_download_menu)
+                self.print_menu_art()
             elif choice == '3':
                 self.print_logo()
                 self.dao.get_art_spine()
-                print("\n1 = Return to Art Menu")
-                choice = input("\n---> ")
-                option = '1'
-                if choice == option:
-                    self.print_menu_art()
+                choice = input(msg_return_art_download_menu)
+                self.print_menu_art()
             elif choice == '4':
                 self.print_logo()
                 self.dao.get_art_disc()
-                print("\n1 = Return to Art Menu")
-                choice = input("\n---> ")
-                option = '1'
-                if choice == option:
-                    self.print_menu_art()
+                choice = input(msg_return_art_download_menu)
+                self.print_menu_art()
             elif choice == '5':
                 self.print_logo()
                 self.dao.get_art_background()
-                print("\n1 = Return to Art Menu")
-                choice = input("\n---> ")
-                option = '1'
-                if choice == option:
-                    self.print_menu_art()
+                choice = input(msg_return_art_download_menu)
+                self.print_menu_art()
             elif choice == '6':
                 self.print_logo()
                 self.dao.get_art_logo()
-                print("\n1 = Return to Art Menu")
-                choice = input("\n---> ")
-                option = '1'
-                if choice == option:
-                    self.print_menu_art()
+                choice = input(msg_return_art_download_menu)
+                self.print_menu_art()
             elif choice == '7':
                 self.print_logo()
                 self.dao.get_art_screenshot()
-                print("\n1 = Return to Art Menu")
-                choice = input("\n---> ")
-                option = '1'
-                if choice == option:
-                    self.print_menu_art()
+                choice = input(msg_return_art_download_menu)
+                self.print_menu_art()
             elif choice == '8':
                 self.print_logo()
                 self.dao.get_art_all()
-                print("\n1 = Return to Art Menu")
-                choice = input("\n---> ")
-                option = '1'
-                if choice == option:
-                    self.print_menu_art()
+                choice = input(msg_return_art_download_menu)
+                self.print_menu_art()
             elif choice == '9':
                 self.print_menu()
