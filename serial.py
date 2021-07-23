@@ -1,5 +1,4 @@
 class Serial:
-
     ntsc_j_c_k_serials = ('SLPS', 'SCAJ', 'SLKA', 'SLPM', 'SCKA', 'SCCS', 'SCPS', 'GUST',
                           'ALCH', 'IIDX16COMP', 'SLAJ', 'CPCS', 'SLPN', 'SCPM', 'TCPS',
                           'KOEI', 'ARZE', 'ULKS', 'PBGP', 'IIDX16SP', 'GN', 'HSN', 'MH',
