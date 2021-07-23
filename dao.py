@@ -73,13 +73,9 @@ class Dao:
         self.games.sort(key=lambda x: x.name)
 
     def print_all_games(self):
-        print(f"Games in {self.main_path}:\n")
+        print(f"Games in '{self.main_path}':\n")
         print('Region |   Serial   |   Name\n')
         for game in self.games:
-            # If the game file (ISO) has the ID in front of the name, print only the name
-            # if game.name[:11] == game.id_opl:
-            # print(f'{game.region} | {game.id_formatted} | {game.name[12:]}')
-            # else:
             print(f'{game.region} | {game.id_formatted} | {game.name}')
         if len(self.invalid_isos) > 0:
             print('\nInvalid ISO files:\n')
@@ -90,24 +86,24 @@ class Dao:
         # Open 'data' archive and get a list of games with ('id', 'name')
         with open("data", "rb") as fp:
             data = pickle.load(fp)
-        # Retrieve only 'id's from list and store in another list
+        # Retrieve only id's from list and store in another list
         data_only_ids = []
         for i in data:
             data_only_ids.append(i[0])
-        # Create list of ids from the games renamed
+        # Create list of id's from the games renamed
         id_games_renamed = []
         # Empty list in case the function is called more then once
         id_games_renamed.clear()
         for game in self.games:
             if game.id_formatted in data_only_ids:
-                # The 'index()' method returns the position at the first occurrence of the specified value
+                # The index() method returns the position at the first occurrence of the specified value
                 index = data_only_ids.index(game.id_formatted)
                 if game.id_formatted not in id_games_renamed:
                     new_name = f"{data[index][1]}"
                     os.rename(f"{self.main_path}DVD/{game.file}", f"{self.main_path}DVD/{game.id_opl}.{new_name}.iso")
                     game.name = new_name
                     id_games_renamed.append(game.id_formatted)
-                # If the game is duplicated, rename appending 'Copy'
+                # If the game has copies, rename appending 'Copy + {number of the copy}'
                 else:
                     new_name = f"{data[index][1]} Copy {id_games_renamed.count(game.id_formatted)}"
                     os.rename(f"{self.main_path}DVD/{game.file}", f"{self.main_path}DVD/{game.id_opl}.{new_name}.iso")
