@@ -1,2 +1,3 @@
-# oplinux
-Simple CLI tool to manage Open PS2 Loader (OPL) games in a Linux enviroment.
+# OPLinux
+
+OPLinux is a simple CLI tool developed to help you manage your PS2 games in a linux enviroment.
