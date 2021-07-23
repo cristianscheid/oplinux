@@ -18,9 +18,9 @@ class View:
     def path_input(self):
         while True:
             self.print_logo()
-            # self.dao.main_path = '~/Documents/PS2/OPL_FOLDER'
-            self.dao.main_path = input("Insert the path of your OPL folder as below:\n\n"
-                                       "'/home/user/MyOPLFolder/' or '~/MyOPLFolder/'\n\n---> ")
+            self.dao.main_path = '~/Documents/PS2/OPL_FOLDER'
+            #self.dao.main_path = input("Insert the path of your OPL folder as below:\n\n"
+            #                           "'/home/user/MyOPLFolder/' or '~/MyOPLFolder/'\n\n---> ")
             if self.dao.path_exists():
                 self.dao.search_iso()
                 if len(self.dao.games) > 0:
@@ -53,11 +53,8 @@ class View:
                 self.print_logo()
                 self.dao.search_iso()
                 self.dao.print_all_games()
-                print("\n1 = Return to Menu")
-                choice = input("\n---> ")
-                option = '1'
-                if choice == option:
-                    self.print_menu()
+                choice = input("\nPress Enter/Return to go back to the menu...")
+                self.print_menu()
             # Rename games
             elif choice == '2':
                 self.print_logo()
@@ -66,11 +63,8 @@ class View:
                 self.dao.rename()
                 self.print_logo()
                 print("\nRenaming games -- Ok")
-                print("\n1 = Return to Menu")
-                choice = input("\n---> ")
-                option = '1'
-                if choice == option:
-                    self.print_menu()
+                choice = input("\nPress Enter/Return to go back to the menu...")
+                self.print_menu()
             elif choice == '3':
                 self.print_logo()
                 self.print_menu_art()

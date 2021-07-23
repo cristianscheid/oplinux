@@ -47,22 +47,23 @@ class Dao:
                             extracted = BytesIO()
                             iso.get_file_from_iso_fp(extracted, iso_path='/SYSTEM.CNF;1')
                             raw = extracted.getvalue().decode('utf-8')
-                            game_id = raw[raw.find(':\\') + 2: raw.find(';')]
-                            serial = game_id.split('_')
+                            id_opl = raw[raw.find(':\\') + 2: raw.find(';')]
+                            serial = id_opl.split('_')
                             if serial[0] in Serial.ntsc_j_c_k_serials:
-                                game_region = 'NTSC-J'
+                                region = 'NTSC-J'
                             elif serial[0] in Serial.ntsc_u_serials:
-                                game_region = 'NTSC-U'
+                                region = 'NTSC-U'
                             elif serial[0] in Serial.pal_serials:
-                                game_region = 'PAL'
+                                region = 'PAL'
                             else:
-                                game_region = 'Not Found'
-                            game_name = os.path.join(file)[:-4]
+                                region = 'Not Found'
+                            file = os.path.join(file)
+                            name = file[:-4]
                             # If the ISO file has the id in front of the name, ignore the id
                             # This way only the name is saved as the game name
-                            if game_name[:11] == game_id:
-                                game_name = game_name[12:]
-                            self.games.append(Game(game_id, game_name, game_region))
+                            if name[:11] == id_opl:
+                                name = name[12:]
+                            self.games.append(Game(id_opl, file, name, region))
                             iso.close()
                         except:
                             iso.close()
@@ -76,9 +77,9 @@ class Dao:
         print('Region |   Serial   |   Name\n')
         for game in self.games:
             # If the game file (ISO) has the ID in front of the name, print only the name
-            #if game.name[:11] == game.id_opl:
-                #print(f'{game.region} | {game.id_formatted} | {game.name[12:]}')
-            #else:
+            # if game.name[:11] == game.id_opl:
+            # print(f'{game.region} | {game.id_formatted} | {game.name[12:]}')
+            # else:
             print(f'{game.region} | {game.id_formatted} | {game.name}')
         if len(self.invalid_isos) > 0:
             print('\nInvalid ISO files:\n')
@@ -103,13 +104,13 @@ class Dao:
                 index = data_only_ids.index(game.id_formatted)
                 if game.id_formatted not in id_games_renamed:
                     new_name = f"{data[index][1]}"
-                    os.rename(f"{self.main_path}DVD/{game.name}.iso", f"{self.main_path}DVD/{game.id_opl}.{new_name}.iso")
+                    os.rename(f"{self.main_path}DVD/{game.file}", f"{self.main_path}DVD/{game.id_opl}.{new_name}.iso")
                     game.name = new_name
                     id_games_renamed.append(game.id_formatted)
                 # If the game is duplicated, rename appending 'Copy'
                 else:
                     new_name = f"{data[index][1]} Copy {id_games_renamed.count(game.id_formatted)}"
-                    os.rename(f"{self.main_path}DVD/{game.name}.iso", f"{self.main_path}DVD/{game.id_opl}.{new_name}.iso")
+                    os.rename(f"{self.main_path}DVD/{game.file}", f"{self.main_path}DVD/{game.id_opl}.{new_name}.iso")
                     game.name = new_name
                     id_games_renamed.append(game.id_formatted)
             else:
