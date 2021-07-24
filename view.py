@@ -19,13 +19,13 @@ class View:
     def path_input(self):
         while True:
             self.print_logo()
-            self.dao.main_path = '~/Documents/PS2/OPL_FOLDER'
-            #self.dao.main_path = input("Insert the path of your OPL folder as below:\n\n"
-            #                           "'/home/user/MyOPLFolder/' or '~/MyOPLFolder/'\n\n---> ")
+            #self.dao.main_path = '~/Documents/PS2/OPL_FOLDER'
+            self.dao.main_path = input("Insert the path of your OPL folder as below:\n\n"
+                                       "'/home/user/MyOPLFolder/' or '~/MyOPLFolder/'\n\n---> ")
             if self.dao.path_exists():
                 self.dao.search_iso()
                 if len(self.dao.games) > 0:
-                    if len(self.dao.invalid_isos) = 0:
+                    if len(self.dao.invalid_isos) == 0:
                         print(f"\nFound {len(self.dao.games)} PS2 game(s)!")
                     else:
                         print(f"\nFound {len(self.dao.games)} PS2 game(s) and {len(self.dao.invalid_isos)} invalid ISO file(s)!")
@@ -33,8 +33,17 @@ class View:
                     time.sleep(self.slp_time)
                     self.print_menu()
                 else:
-                    print(f"\nNo PS2 game found in '{self.dao.main_path}'\n! Please check the path/folder...")
-                    time.sleep(self.slp_time)
+                    self.print_logo()
+                    print(f"\nNo PS2 game found in '{self.dao.main_path}'!")
+                    print(f"\nPlease check if the path you entered is correct. The folder must contain a structure similar to the 'MyOPLFolder' shown below:")
+                    print('\n|--MyOPLFolder/')
+                    print('  |-- DVD/')
+                    print('    |-- game_01.iso')
+                    print('    |-- game_02.iso')
+                    print('    |-- game_03.iso')
+                    print("\nThe games ISO files must be inside a folder called 'DVD' so that this program and the OPL (Open PS2 Loader) can find them.")
+                    print("\nYou can insert the OPL folder path ('~/MyOPLFolder/') or the DVD folder path('~/MyOPLFolder/DVD/').")
+                    choice = input("\nPress Enter/Return to return insert another path... ")
             else:
                 print("\nInvalid path (doesn't exist)!")
                 time.sleep(self.slp_time)
@@ -43,7 +52,7 @@ class View:
     def print_menu(self):
         self.print_logo()
         print("1 = List all games")
-        print("2 = Rename games")
+        print("2 = Update game titles")
         print("3 = Art download menu")
         print("\nq = Quit")
         qt = False
@@ -57,17 +66,17 @@ class View:
                 self.print_logo()
                 self.dao.search_iso()
                 self.dao.print_all_games()
-                choice = input("\nPress Enter/Return to go back to the main menu...")
+                choice = input("\nPress Enter/Return to return to main menu... ")
                 self.print_menu()
-            # Rename games
+            # Update game titles
             elif choice == '2':
                 self.print_logo()
-                print("\nRenaming games...")
+                print("\nUpdating titles...")
                 self.dao.search_iso()
                 self.dao.rename()
                 self.print_logo()
-                print("\nRenaming games -- Ok")
-                choice = input("\nPress Enter/Return to go back to the main menu...")
+                print("\nUpdating titles -- Ok")
+                choice = input("\nPress Enter/Return to return to main menu... ")
                 self.print_menu()
             # Art download menu
             elif choice == '3':

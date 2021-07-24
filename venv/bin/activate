@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/cristian/Documents/PycharmProjects/OPLinuxManager/venv"
+VIRTUAL_ENV="/home/cristian/Documents/Python Projects/oplinux/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
