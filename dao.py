@@ -204,3 +204,4 @@ class Dao:
         self.get_art_background()
         self.get_art_logo()
         self.get_art_screenshot()
+
